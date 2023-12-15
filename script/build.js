@@ -17,6 +17,7 @@ async function startBuild(target) {
     plugins: [
       dts({
         outDir: resolve(__dirname, target ? `../dist/` : '../dist/types/'),
+        exclude: ['vite.config.ts', 'src/**/__test__/**/*'],
       }),
     ],
     build: {
