@@ -1,4 +1,4 @@
-const { readFile, writeFile } = require('fs')
+const { readFile, writeFile, readdirSync, statSync } = require('fs')
 const { resolve } = require('path')
 const { build } = require('vite')
 const dts = require('vite-plugin-dts')
@@ -10,6 +10,15 @@ async function main() {
   await startBuild()
   await addMainPackageJson()
   await addReadMe()
+
+  const dirs = readdirSync(resolve(__dirname, '../src')).filter((dir) =>
+    statSync(resolve(__dirname, `../src/${dir}`)).isDirectory(),
+  )
+
+  for (const dir of dirs) {
+    await startBuild(dir)
+    await addMainPackageJsonWithPackage(dir)
+  }
 }
 
 async function startBuild(target) {
@@ -64,6 +73,26 @@ async function addMainPackageJson() {
     license: pkg.license,
     repository: pkg.repository,
     homepage: pkg.homepage,
+  }
+
+  return new Promise((resolve, reject) => {
+    writeFile(fileName, JSON.stringify(data, null, 2), (err) => {
+      if (err) reject(err)
+      else resolve()
+    })
+  })
+}
+
+async function addMainPackageJsonWithPackage(pkgName) {
+  const dir = resolve(__dirname, `../dist/${pkgName}`)
+  const fileName = resolve(dir, 'package.json')
+
+  const data = {
+    name: pkgName,
+    version: pkg.version,
+    main: pkg.main,
+    module: pkg.module,
+    types: './index.d.ts',
   }
 
   return new Promise((resolve, reject) => {

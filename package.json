@@ -1,12 +1,14 @@
 {
   "name": "easy-tool",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "description": "js工具库",
   "main": "./index.umd.js",
   "module": "./index.esm.js",
   "types": "./types/index.d.ts",
   "scripts": {
     "test": "jest",
+    "test:walkForest": "jest src/walkForest/__test__",
+    "test:acute": "jest src/acute/__test__",
     "commit": "cz",
     "build": "node ./script/build.js",
     "prepare": "husky install"

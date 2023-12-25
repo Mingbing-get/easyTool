@@ -26,5 +26,6 @@ module.exports = {
     '@typescript-eslint/strict-boolean-expressions': 'off',
     'no-new': 'off',
     '@typescript-eslint/no-invalid-void-type': 'off',
+    '@typescript-eslint/no-floating-promises': 'off',
   },
 }
