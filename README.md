@@ -84,3 +84,30 @@ walkForest
   .flatWithPath // 将树转为列表，每项是节点和其对应的路径
   .flat // 将树转为列表，每项是节点
 ```
+
+### acute
+
+##### 一套响应式API
+
+##### 用法
+
+```ts
+import { useCell, brain } from 'easy-tool'
+
+const state = useCell(10) // 定义一个响应式数据
+
+// 在watch中使用响应式数据
+// 定义时会调用一次传入watch的函数
+// 若state的数据发生变化，则会自动重新执行传入watch的函数
+brain.watch(() => {
+  console.log(state.v) // 10
+})
+
+// 在compute中使用相应式数据
+// 定义时会调用一次传入compute的函数，并且会返回函数的返回值
+// 当state的数据发生变化时，会自动重新执行闯入compute的函数，并且自动更新返回值数据
+// 返回值数据也是一个响应式数据（只读）
+const computeState = brain.compute(() => {
+  return state.v * 10
+}) // computeState.v === 100
+```
